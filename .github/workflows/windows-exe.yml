@@ -4,7 +4,7 @@ on:
   push:
     branches: [windows-desktop-build]
 permissions:
-  contents: read
+  contents: write
 jobs:
   desktop:
     strategy:
@@ -25,14 +25,50 @@ jobs:
           echo 'C:\ProgramData\chocolatey\bin' >> $env:GITHUB_PATH
       - run: python -m pip install -e ".[test,build,local]"
       - name: Tests
+        id: tests
         env:
           QT_QPA_PLATFORM: offscreen
-        run: python -m pytest -q
+        shell: pwsh
+        run: |
+          python -m pytest -q 2>&1 | Tee-Object -FilePath test-output.txt
+          exit $LASTEXITCODE
       - name: Build unsigned desktop package
-        run: python scripts/build_desktop.py
+        id: build
+        shell: pwsh
+        run: |
+          python scripts/build_desktop.py 2>&1 | Tee-Object -FilePath build-output.txt
+          exit $LASTEXITCODE
       - uses: actions/upload-artifact@v4
+        id: artifact
         with:
           name: DramaScript-${{ matrix.os }}-unsigned
           path: |
             dist/*.zip
           if-no-files-found: error
+      - name: Record build result on dedicated branch
+        if: always()
+        shell: pwsh
+        env:
+          TEST_RESULT: ${{ steps.tests.outcome }}
+          BUILD_RESULT: ${{ steps.build.outcome }}
+          ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
+          ARTIFACT_ID: ${{ steps.artifact.outputs.artifact-id }}
+        run: |
+          New-Item -ItemType Directory -Force build-results | Out-Null
+          $result = @{
+            source_commit = $env:GITHUB_SHA
+            run_url = "https://github.com/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+            tests = $env:TEST_RESULT
+            build = $env:BUILD_RESULT
+            artifact_url = $env:ARTIFACT_URL
+            artifact_id = $env:ARTIFACT_ID
+          }
+          $result | ConvertTo-Json | Set-Content -Encoding utf8 build-results/windows.json
+          foreach ($file in @('test-output.txt', 'build-output.txt')) {
+            if (Test-Path $file) { Get-Content $file -Tail 120 | Set-Content -Encoding utf8 "build-results/$file" }
+          }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add build-results
+          git commit -m 'Record Windows build result [skip ci]'
+          git push origin HEAD:windows-desktop-build
