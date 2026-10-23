@@ -1,0 +1,70 @@
+{
+  "whisper": {
+    "model": "tiny",
+    "language": "en",
+    "text": "And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.",
+    "seconds": 1.35,
+    "actual_inference": true
+  },
+  "vision": {
+    "model": "HuggingFaceTB/SmolVLM-256M-Instruct",
+    "actual_inference": true,
+    "check": "猫的图像识别",
+    "output": " The image shows two cats, one of which is a tabby cat. The tabby cat is lying on a pink blanket, which is placed on a couch. The couch is pink and has a cushioned surface. The couch is placed against a wall that is painted in a light pink color.\n\nThe cats are both lying down, with the tabby cat on the left side of the image and the other cat on the right side. Both cats have their eyes closed and appear relaxed. The tabby cat has a lighter color, while the other cat has a darker color. The tabby cat has a lighter-colored body with darker stripes, while the other cat has a darker body with lighter stripes.\n\nThe blanket on the couch is pink and has a soft texture. The couch itself is pink and has a smooth surface. The couch is placed against a wall that is painted in a light pink color.\n\nThe background of the image is a wall painted in a light pink color. There is a window to the left of the couch, but it is not visible in the image.\n\nThe image does not contain any other objects or people, such as toys, furniture, or other animals. The focus is solely on the cats and their surroundings.",
+    "seconds": 55.9,
+    "scope": "小型模型图像诊断，不代表中文剧本质量验收",
+    "semantic_fidelity_accepted": false
+  },
+  "qwen": {
+    "model": "Qwen/Qwen3-VL-2B-Instruct",
+    "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+    "actual_inference": true,
+    "output": "画面中有一只小猫和一只大猫，它们正躺在粉红色的沙发上休息。",
+    "seconds": 15.0,
+    "quality_accepted": false,
+    "scope": "单帧中文描述验证，不是完整长视频剧本验收"
+  },
+  "sources": {
+    "speech": "https://raw.githubusercontent.com/openai/whisper/main/tests/jfk.flac",
+    "image": "https://raw.githubusercontent.com/huggingface/transformers/main/tests/fixtures/tests_samples/COCO/000000039769.png"
+  },
+  "cloud_inference": "未执行：缺少安全配置的密钥",
+  "story_quality_accepted": false,
+  "packaging_scope": "Linux 冻结程序已验证；Windows/macOS 未构建，用户要求暂不推送代码。",
+  "first_full_pipeline_test": {
+    "accepted": false,
+    "reason": "原始语音转写正确，但视觉分析误称无对白，剧本生成只接收该分析而漏掉声音。",
+    "correction": "流程 v2 将原始转写直接传给编剧阶段，并在图片后重申独立声音证据；旧缓存因流程版本变化不再复用。",
+    "retest": "流程 v4 技术测试片重测通过；真实剧情片尚未验收"
+  },
+  "latest_pipeline": {
+    "actual_inference": true,
+    "pipeline_completed": true,
+    "quality_accepted": false,
+    "pipeline_version": 4,
+    "model": "Qwen/Qwen3-VL-2B-Instruct",
+    "seconds": 17.48,
+    "script": "第1场　内外景不明 · 地点不明 · 时间不明\n\n纯蓝色背景画面。\n\n未识别声音（说话人及画内外位置待核实）：因此，我的同胞们，请不要问你们的国家能为你们做什么，而应问问你们能为自己的国家做些什么。",
+    "report": "全片证据核对与待核实人物线索\n\n范围：视频分析已完成。以下时间和声音条目由项目证据直接生成，模型不能改写。\n\n一、时间顺序证据清单\n\n0.00–12.00秒 · 画面：纯蓝色背景画面。；\n\n0.00–11.00秒 · 声音（说话人未识别）：因此，我的同胞们，请不要问你们的国家能为你们做什么，而应问问你们能为自己的国家做些什么。\n\n二、人物档案线索（姓名提及不等于说话人归属；性格倾向仅是推断）\n\n姓名线索：未识别声音；言语/行为倾向候选：重视责任（待核实）。\n证据由程序原样引用：0.00–11.00秒 · 声音（说话人未识别）：因此，我的同胞们，请不要问你们的国家能为你们做什么，而应问问你们能为自己的国家做些什么。\n\n引用说明：唯一证据自动关联，语义和人物归属仍待核实\n\n三、连续性核对项目（待人工确认，不是已证实矛盾）\n\n对白归属待核实\n0.00–11.00秒 · 声音（说话人未识别）：因此，我的同胞们，请不要问你们的国家能为你们做什么，而应问问你们能为自己的国家做些什么。\n\n四、已知范围限制\n\n对白未自动完成声纹与出镜身份匹配；抽样间隙可能有未记录事件；时间先后不能直接证明因果；跨批次关系尚未自动确认。\n\n本报告不修改剧本正文，不能作为剧情逻辑、人物性格或完整性的自动验收。",
+    "fixture": "12秒纯蓝色画面加公开 JFK 测试语音；只验证技术流程和画外声音保留，不是实际剧情片验收",
+    "resumed_run": true,
+    "cached_evidence_reused": true,
+    "timing_is_cold_start_benchmark": false
+  },
+  "review_status": {
+    "schema_and_references_validated": true,
+    "semantic_quality_accepted": false,
+    "failed_batches": 0,
+    "total_batches": 1,
+    "errors": []
+  },
+  "rejected_freeform_report": {
+    "accepted": false,
+    "reasons": [
+      "虚构历史来源",
+      "误将有语音片段称为无声",
+      "时间单位混乱"
+    ],
+    "replacement": "由代码产生时间线和声音证据，模型仅提供受限候选线索；不得改写事实。"
+  }
+}
