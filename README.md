@@ -84,7 +84,7 @@ python scripts/build_desktop.py
 python scripts/package_source.py
 ```
 
-分别在目标 Windows/macOS 系统构建；PyInstaller 不交叉编译。构建脚本会检查冻结程序启动，并生成 Windows ZIP 或 macOS DMG。构建机需要 FFmpeg；生成的软件包自带 FFmpeg/FFprobe，并在清空 PATH 后检查组件启动，用户无需另行安装。包未签名，正式分发仍需签名/公证及实机验证。GitHub Actions 双平台流程已保存，尚未执行。
+分别在目标 Windows/macOS 系统构建；PyInstaller 不交叉编译。构建脚本会检查冻结程序启动，并生成 Windows ZIP 或 macOS DMG。构建机需要 FFmpeg；生成的软件包自带 FFmpeg/FFprobe，并在清空 PATH 后检查组件启动，用户无需另行安装。包未签名，正式分发仍需签名/公证及实机验证。GitHub Actions 双平台流程已保存；经授权，Windows 专用流程已推送到 windows-desktop-build 分支，结果以该分支 build-results/windows.json 为准。
 
 本地转写依赖限制 PyAV <17，避免已复现的 PyAV 19 解码参数不兼容。当前 Linux 构建仅验证该平台，不代表 Windows/macOS 已通过。
 
@@ -98,3 +98,5 @@ python scripts/validate_models.py --mode cloud --video /path/to/video.mp4 --proj
 继续失败任务需加 --resume；缓存复用不能证明本次重新调用了所有模型。real-validation.json 只记录流程完成，始终不自动认定故事质量合格。Windows 路径可用引号括起。
 
 桌面启动、密钥填写及双击构建说明见 [桌面版使用说明](docs/桌面版使用说明.md)。构建不需要密钥；大型本地模型单独下载。
+
+Windows x64 已构建并通过 38 项测试及冻结程序启动检查：[下载 Windows 桌面包](https://github.com/pulpilodoli-sys/voxcpm/actions/runs/39963300752/artifacts/12506365570)。GitHub 下载包内的 DramaScript-win32.zip 需再次解压，随后运行 DramaScript.exe。软件未签名，main 未修改。

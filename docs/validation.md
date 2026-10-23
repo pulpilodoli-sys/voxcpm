@@ -49,3 +49,13 @@
 - 38 项测试通过。Linux 冻结程序启动通过，清空 PATH 后内置组件版本检查通过。
 - 直接调用包内 FFmpeg，在 PATH 为空且只指向包内动态库的环境中生成 1 秒 MP4，再用包内 FFprobe 读取时长，得到 1.000000 秒。
 - Windows/macOS 双击构建脚本已准备，尚未在目标系统执行；未推送仓库。
+
+### Windows x64 原生构建通过
+
+- 源码提交：63a2124d61d47157277041a27377be369879753d。
+- GitHub Windows runner：38 项测试通过（10.99 秒）。
+- PyInstaller 生成 DramaScript.exe，冻结 GUI 启动检查通过。
+- PATH 为空时，内置 FFmpeg/FFprobe 检查通过。
+- 输出 DramaScript-win32.zip，未签名。
+- 下载：https://github.com/pulpilodoli-sys/voxcpm/actions/runs/39963300752/artifacts/12506365570
+- 这不代表真实长片剧情质量或云端模型推理已通过验收。
